@@ -3,6 +3,8 @@ FROM selenium/base:latest
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
 
+USER root
+
 #===================
 # Timezone settings
 # Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
@@ -15,7 +17,7 @@ RUN echo "${TZ}" > /etc/timezone \
 # PhantomJS
 #==============
 RUN apt-get update -y
-RUN apt-get install bzip2 libfreetype6 libfontconfig1  -y
+RUN apt-get install bzip2 libfreetype6 libfontconfig1 xvfb  -y
 RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
 RUN tar -xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 && rm phantomjs-2.1.1-linux-x86_64.tar.bz2
 RUN mv /phantomjs-2.1.1-linux-x86_64 /usr/local/phantomjs-2.1.1-linux-x86_64
@@ -35,13 +37,13 @@ ENV DISPLAY :99.0
 # Scripts to run Selenium Standalone
 #====================================
 COPY entry_point.sh /opt/bin/entry_point.sh
-COPY functions.sh /opt/bin/functions.sh
 RUN chmod +x /opt/bin/entry_point.sh
-RUN chmod +x /opt/bin/functions.sh
 
 # phantomjs will write its log here
 RUN mkdir -p /var/log/selenium && chmod a+w /var/log/selenium
 
 EXPOSE 4444
+
+USER seluser
 
 CMD ["/opt/bin/entry_point.sh"]

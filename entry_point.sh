@@ -1,7 +1,6 @@
-
 #!/bin/bash
 
-source /opt/bin/functions.sh
+#source /opt/bin/functions.sh
 
 export GEOMETRY="$SCREEN_WIDTH""x""$SCREEN_HEIGHT""x""$SCREEN_DEPTH"
 
@@ -14,13 +13,12 @@ if [ ! -z "$SE_OPTS" ]; then
   echo "appending selenium options: ${SE_OPTS}"
 fi
 
-echo "Selenium is here:"
-pwd
-ls -l /opt/selenium/
+rm -f /tmp/.X*lock
+
 
 # phantomjs will want to put its log file somewhere it can write to
-cd /var/log/selenium
-java ${JAVA_OPTS} -jar /opt/selenium/selenium-server-standalone.jar \
+xvfb-run -a --server-args="-screen 0 $GEOMETRY -ac +extension RANDR" \
+  java ${JAVA_OPTS} -jar /opt/selenium/selenium-server-standalone.jar \
   ${SE_OPTS} &
 NODE_PID=$!
 
