@@ -14,6 +14,10 @@ if [ ! -z "$SE_OPTS" ]; then
   echo "appending selenium options: ${SE_OPTS}"
 fi
 
+echo "Selenium is here:"
+pwd
+ls -l /opt/selenium/
+
 # phantomjs will want to put its log file somewhere it can write to
 cd /var/log/selenium
 java ${JAVA_OPTS} -jar /opt/selenium/selenium-server-standalone.jar \
