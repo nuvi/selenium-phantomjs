@@ -44,6 +44,6 @@ RUN mkdir -p /var/log/selenium && chmod a+w /var/log/selenium
 
 EXPOSE 4444
 
-USER seluser
+#USER seluser
 
 CMD ["/opt/bin/entry_point.sh"]
