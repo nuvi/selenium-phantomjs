@@ -31,20 +31,17 @@ ENV SCREEN_HEIGHT 1020
 ENV SCREEN_DEPTH 24
 ENV DISPLAY :99.0
 
-USER root
-
 #====================================
 # Scripts to run Selenium Standalone
 #====================================
 COPY entry_point.sh /opt/bin/entry_point.sh
+COPY functions.sh /opt/bin/functions.sh
 RUN chmod +x /opt/bin/entry_point.sh
+RUN chmod +x /opt/bin/functions.sh
 
 # phantomjs will write its log here
 RUN mkdir -p /var/log/selenium && chmod a+w /var/log/selenium
 
-USER seluser
-
 EXPOSE 4444
 
 CMD ["/opt/bin/entry_point.sh"]
-
